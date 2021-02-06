@@ -1,0 +1,80 @@
+﻿@page "/editlanguage/{id}"
+
+@using Microsoft.AspNetCore.SignalR.Client
+
+@inject NavigationManager NavigationManager
+@inject HttpClient HttpClient
+
+
+<h2>Edit Language</h2>
+
+<EditForm Model="@language">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="Name" class="control-label">Name</label>
+                <input for="Name" class="form-control" @bind="@language.Name" />
+            </div>
+            <div class="form-group">
+                <label for="WebSite" class="control-label">WebSite</label>
+                <input for="WebSite" class="form-control" @bind="@language.WebSite" />
+            </div>
+            <div class="form-group">
+                <label for="Extensions" class="control-label">Extensions</label>
+                <input for="Extensions" class="form-control" @bind="@language.Extensions" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" value="Save" @onclick="@UpdateLanguage" />
+                <input type="button" class="btn btn-secondary" value="Cancel" @onclick="@Cancel" />
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+
+    Programming language = new Programming();
+    private HubConnection hubConnection;
+
+    [Parameter]
+    public string id { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        language = await HttpClient.GetFromJsonAsync<Programming>($"api/programmings/{id}");
+
+        hubConnection = new HubConnectionBuilder()
+        .WithUrl(NavigationManager.ToAbsoluteUri("/languageHub"))
+        .Build();
+
+
+        await hubConnection.StartAsync();
+    }
+
+    protected async Task UpdateLanguage()
+    {
+        await HttpClient.PutAsJsonAsync($"api/programmings/{id}", language);
+        if (IsConnected) await SendMessage();
+
+        NavigationManager.NavigateTo("/languageslist");
+    }
+
+    Task SendMessage() => hubConnection.SendAsync("SendMessage");
+
+    public bool IsConnected => hubConnection.State == HubConnectionState.Connected;
+
+    public void Dispose()
+    {
+        _ = hubConnection.DisposeAsync();
+    }
+
+    public void Cancel()
+    {
+        NavigationManager.NavigateTo("/languageslist");
+    }
+}
