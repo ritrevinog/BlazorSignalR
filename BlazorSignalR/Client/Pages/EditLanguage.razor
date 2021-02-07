@@ -6,9 +6,51 @@
 @inject HttpClient HttpClient
 
 
-<h2>Edit Language</h2>
+<RadzenTemplateForm Data="@language">
+    <div class="row">
+        <div class="col-10">
+            <RadzenFieldset Text="Edit Language">
+                <div class="row">
+                    <div class="col-md-2 align-items-center d-flex">
+                        <RadzenLabel Text="Name" />
+                    </div>
+                    <div class="col-md-6 fieldSpace">
+                        <RadzenTextBox Name="Name" Style="width:100%" @bind-Value="@language.Name" />
+                    </div>
+                </div>
 
-<EditForm Model="@language">
+                <div class="row">
+                    <div class="col-md-2 align-items-center d-flex">
+                        <RadzenLabel Text="WebSite" />
+                    </div>
+                    <div class="col-md-6 fieldSpace">
+                        <RadzenTextBox Name="WebSite" Style="width:100%" @bind-Value="@language.WebSite" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2 align-items-center d-flex">
+                        <RadzenLabel Text="Extensions" />
+                    </div>
+                    <div class="col-md-6 fieldSpace">
+                        <RadzenTextBox Name="Extensions" Style="width:100%" @bind-Value="@language.Extensions" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2 align-items-center d-flex" />
+                    <div class="col-md-6 fieldSpace">
+                        <RadzenButton Text="Save" ButtonStyle="ButtonStyle.Primary" Click=@(args => UpdateLanguage()) />
+                        <RadzenButton Text="Cancel" ButtonStyle="ButtonStyle.Secondary" Click=@(args => Cancel()) />
+                    </div>
+                </div>
+
+            </RadzenFieldset>
+        </div>
+    </div>
+</RadzenTemplateForm>
+
+@*<EditForm Model="@language">
     <div class="row">
         <div class="col-md-8">
             <div class="form-group">
@@ -33,7 +75,7 @@
             </div>
         </div>
     </div>
-</EditForm>
+</EditForm>*@
 
 @code {
 
