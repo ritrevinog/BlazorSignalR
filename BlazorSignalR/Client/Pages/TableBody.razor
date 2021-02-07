@@ -1,0 +1,26 @@
+﻿<tbody>
+@if(languages.Count==0)
+{
+    <tr>
+        <td colspan="5">No hay registros</td>
+    </tr>
+}
+else
+{
+    @foreach (var lang in languages)
+    {
+        <tr>
+            <td>@lang.Name</td>
+            <td>@lang.WebSite</td>
+            <td>@lang.Extensions</td>
+            <td><a href="/editlanguage/@lang.Id">Edit</a></td>
+            <td><a href="/deletelanguage/@lang.Id">Delete</a></td>
+        </tr>
+    }
+}
+</tbody>
+
+@code {
+    [Parameter]
+    public List<Programming> languages { get; set; }
+}

@@ -14,11 +14,15 @@
 
 @if (languages == null)
 {
+    <text>Cargando datos ...</text>
+
     <p><em>Loading ...</em></p>
 }
 else
 {
-    <table class="table">
+    <Table languages="languages"/>
+
+@*    <table class="table table-sm table-striped">
         <thead>
             <tr>
                 <th>Name</th>
@@ -41,15 +45,20 @@ else
             }
         </tbody>
     </table>
-}
+*@}
 
 @code {
-
     List<Programming> languages;
     private HubConnection hubConnection;
 
     protected override async Task OnInitializedAsync()
     {
+        //await Task.Delay(2000); //2 segs.
+
+        // Consumir datos Json desde una WebAPI
+        // https://localhost:44321/languages/ es la direccion del API
+        //languages = await HttpClient.GetFromJsonAsync<List<Programming>>("https://localhost:44321/languages/");
+        
         hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("/languageHub"))
             .Build();
